@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ portfolio.name }} - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --link-color: #2563eb;
+            --link-hover: #1d4ed8;
+            --bg-primary: #ffffff;
+            --border-color: #e5e7eb;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        
+        .nav-name:hover {
+            color: var(--link-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .profile-section {
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 3px solid var(--border-color);
+        }
+
+        .profile-image-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--link-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 600;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            text-align: left;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-icon {
+            width: 20px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .contact-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-item a:hover {
+            color: var(--link-color);
+        }
+
+        .main-content {
+            max-width: 800px;
+        }
+
+        .content-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-intro {
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .section-intro a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .section-intro a:hover {
+            text-decoration: underline;
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+        }
+
+        .skills-section {
+            margin-top: 2rem;
+        }
+
+        .skills-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .experience-item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+
+        .experience-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .experience-org {
+            font-weight: 500;
+        }
+
+        .experience-description {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .publications-year {
+            margin-bottom: 3rem;
+        }
+
+        .year-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .publication-item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .publication-item:last-child {
+            border-bottom: none;
+        }
+
+        .publication-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .publication-title a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .publication-title a:hover {
+            text-decoration: underline;
+        }
+
+        .publication-authors {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .publication-venue {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .publication-images {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .publication-image {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .publication-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-item {
+            margin-bottom: 2rem;
+        }
+
+        .project-image {
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-title a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .project-title a:hover {
+            text-decoration: underline;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .profile-section {
+                text-align: center;
+            }
+
+            .contact-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .contact-item {
+                flex: 1 1 auto;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .publication-images {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#about" class="nav-name" style="text-decoration: none; color: inherit; cursor: pointer;">
+                {% set name_parts = portfolio.name.split() %}
+                {% if name_parts|length > 2 %}
+                    {{ name_parts[0] }} {{ name_parts[1][0] + '.' }} {{ name_parts[2:]|join(' ') }}
+                {% elif name_parts|length > 1 %}
+                    {{ name_parts[0] }} {{ name_parts[1] }}
+                {% else %}
+                    {{ name_parts[0] }}
+                {% endif %}
+            </a>
+            <div class="nav-links">
+                {% if 'publications' in portfolio.sections and portfolio.publications %}<a href="#publications">Publications</a>{% endif %}
+                {% if 'projects' in portfolio.sections and portfolio.projects %}<a href="#portfolio">Portfolio</a>{% endif %}
+                {% if 'experience' in portfolio.sections and portfolio.experience %}<a href="#experience">Experiencia</a>{% endif %}
+                {% if 'about' in portfolio.sections %}<a href="#about">About</a>{% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile-section">
+                {% if portfolio.profileImage %}
+                <img src="{{ portfolio.profileImage }}" alt="{{ portfolio.name }}" class="profile-image">
+                {% else %}
+                <div class="profile-image-placeholder">{{ portfolio.name[0]|upper }}</div>
+                {% endif %}
+                
+                <h1 class="profile-name">{{ portfolio.name }}</h1>
+                <p class="profile-title">{{ portfolio.title }}</p>
+
+                <div class="contact-info">
+                    {% if portfolio.contact.location %}
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>{{ portfolio.contact.location }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.email %}
+                    <div class="contact-item">
+                        <span class="contact-icon">✉️</span>
+                        <a href="mailto:{{ portfolio.contact.email }}">Email</a>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.researchgate %}
+                    <div class="contact-item">
+                        <span class="contact-icon">R</span>
+                        <a href="https://www.researchgate.net/profile/{{ portfolio.contact.researchgate }}" target="_blank">ResearchGate</a>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.linkedin %}
+                    <div class="contact-item">
+                        <span class="contact-icon">in</span>
+                        <a href="https://www.linkedin.com/in/{{ portfolio.contact.linkedin }}" target="_blank">LinkedIn</a>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.github %}
+                    <div class="contact-item">
+                        <span class="contact-icon">🐙</span>
+                        <a href="https://github.com/{{ portfolio.contact.github }}" target="_blank">Github</a>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.scholar %}
+                    <div class="contact-item">
+                        <span class="contact-icon">🎓</span>
+                        <a href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}" target="_blank">Google Scholar</a>
+                    </div>
+                    {% endif %}
+
+                    {% if portfolio.contact.orcid %}
+                    <div class="contact-item">
+                        <span class="contact-icon">O</span>
+                        <a href="https://orcid.org/{{ portfolio.contact.orcid }}" target="_blank">ORCID</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {% if 'about' in portfolio.sections %}
+            <section id="about" class="content-section">
+                <h2 class="section-title">About me</h2>
+                {% if portfolio.about %}
+                <div class="about-text">
+                    {{ portfolio.about|replace('\n', '<br>')|safe }}
+                </div>
+                {% else %}
+                <div class="about-text">
+                    <p>Profesional en Ciencias de la Computación especializado en {{ portfolio.title }}.</p>
+                </div>
+                {% endif %}
+
+                {% if portfolio.skills %}
+                <div class="skills-section">
+                    <h3>Habilidades Técnicas</h3>
+                    <div class="skills-tags">
+                        {% for skill in portfolio.skills %}
+                        <span class="skill-tag">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+            {% endif %}
+
+            {% if 'experience' in portfolio.sections and portfolio.experience %}
+            <section id="experience" class="content-section">
+                <h2 class="section-title">Experiencia</h2>
+                {% for exp in portfolio.experience %}
+                <div class="experience-item">
+                    <h3 class="experience-title">{{ exp.title }}</h3>
+                    <div class="experience-meta">
+                        {% if exp.organization %}<span class="experience-org">{{ exp.organization }}</span>{% endif %}
+                        {% if exp.location %}<span class="experience-location">{{ exp.location }}</span>{% endif %}
+                        {% if exp.startDate %}
+                        <span class="experience-date">
+                            {{ exp.startDate }} - {{ exp.endDate if exp.endDate else 'Actual' }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% if exp.description %}
+                    <p class="experience-description">{{ exp.description|replace('\n', '<br>')|safe }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            {% if 'publications' in portfolio.sections and portfolio.publications_by_year %}
+            <section id="publications" class="content-section">
+                <h2 class="section-title">Publications</h2>
+                {% if portfolio.contact.scholar %}
+                <p class="section-intro">You can also find my articles on <a href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}" target="_blank">my Google Scholar profile</a>.</p>
+                {% endif %}
+                
+                {% for year, pubs in portfolio.publications_by_year.items() %}
+                <div class="publications-year">
+                    <h3 class="year-title">{{ year }}</h3>
+                    {% for pub in pubs %}
+                    <div class="publication-item">
+                        <h4 class="publication-title">
+                            {% if pub.url %}<a href="{{ pub.url }}" target="_blank">{{ pub.title }}</a>
+                            {% else %}{{ pub.title }}{% endif %}
+                        </h4>
+                        {% if pub.authors %}<p class="publication-authors">{{ pub.authors }}</p>{% endif %}
+                        {% if pub.venue %}<p class="publication-venue">{{ pub.venue }}</p>{% endif %}
+                        {% if pub.image %}
+                        <div class="publication-images">
+                            {% set images = pub.image.split(',') if ',' in pub.image else [pub.image] %}
+                            {% for img in images %}
+                            <div class="publication-image">
+                                <img src="{{ img.strip() }}" alt="{{ pub.title }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            {% if 'projects' in portfolio.sections and portfolio.projects %}
+            <section id="portfolio" class="content-section">
+                <h2 class="section-title">Portfolio</h2>
+                <div class="projects-grid">
+                    {% for project in portfolio.projects %}
+                    <div class="project-item">
+                        {% if project.image %}
+                        <div class="project-image">
+                            <img src="{{ project.image }}" alt="{{ project.name }}">
+                        </div>
+                        {% endif %}
+                        <h3 class="project-title">
+                            {% if project.url %}<a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                            {% else %}{{ project.name }}{% endif %}
+                        </h3>
+                        {% if project.description %}
+                        <p class="project-description">{{ project.description|replace('\n', '<br>')|safe }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

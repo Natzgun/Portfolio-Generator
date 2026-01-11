@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Portafolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generator.css') }}">
+</head>
+<body>
+    <div class="generator-container">
+        <div class="generator-header">
+            <h1>Generador de Portafolio</h1>
+            <a href="/" class="btn-secondary">Volver</a>
+        </div>
+
+        <div class="generator-layout">
+            <!-- Sidebar de navegación -->
+            <aside class="sidebar-nav">
+                <nav class="nav-menu">
+                    <a href="#basic" class="nav-item active" data-section="basic">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-label">Información Básica</span>
+                        <span class="nav-status" id="status-basic">○</span>
+                    </a>
+                    <a href="#contact" class="nav-item" data-section="contact">
+                        <span class="nav-icon">📧</span>
+                        <span class="nav-label">Contacto</span>
+                        <span class="nav-status" id="status-contact">○</span>
+                    </a>
+                    <a href="#sections" class="nav-item" data-section="sections">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Secciones</span>
+                        <span class="nav-status" id="status-sections">○</span>
+                    </a>
+                    <a href="#experience" class="nav-item" data-section="experience">
+                        <span class="nav-icon">💼</span>
+                        <span class="nav-label">Experiencia</span>
+                        <span class="nav-status" id="status-experience">○</span>
+                    </a>
+                    <a href="#publications" class="nav-item" data-section="publications">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-label">Publicaciones</span>
+                        <span class="nav-status" id="status-publications">○</span>
+                    </a>
+                    <a href="#projects" class="nav-item" data-section="projects">
+                        <span class="nav-icon">🚀</span>
+                        <span class="nav-label">Proyectos</span>
+                        <span class="nav-status" id="status-projects">○</span>
+                    </a>
+                    <a href="#skills" class="nav-item" data-section="skills">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-label">Habilidades</span>
+                        <span class="nav-status" id="status-skills">○</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Área de contenido -->
+            <main class="form-container">
+                <form id="portfolio-form">
+                    <!-- Información básica -->
+                    <section class="form-section active" id="section-basic">
+                        <h2>Información Básica</h2>
+                        
+                        <div class="form-group">
+                            <label for="name">Nombre completo *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">Título profesional *</label>
+                            <input type="text" id="title" name="title" placeholder="Ej: Computer Scientist, Software Engineer" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile-image">Foto de perfil (URL o base64)</label>
+                            <input type="text" id="profile-image" name="profileImage" placeholder="URL de imagen o base64">
+                            <small>Puedes usar una URL o codificar tu imagen en base64</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="about">Sobre mí</label>
+                            <textarea id="about" name="about" rows="6" placeholder="Escribe una breve descripción sobre ti..."></textarea>
+                        </div>
+                    </section>
+
+                    <!-- Contacto -->
+                    <section class="form-section" id="section-contact">
+                        <h2>Información de Contacto</h2>
+                        
+                        <div class="form-group">
+                            <label for="location">Ubicación</label>
+                            <input type="text" id="location" name="location" placeholder="Ej: Arequipa, Perú">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="github">GitHub</label>
+                            <input type="text" id="github" name="github" placeholder="usuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="text" id="linkedin" name="linkedin" placeholder="usuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="researchgate">ResearchGate</label>
+                            <input type="text" id="researchgate" name="researchgate" placeholder="usuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="scholar">Google Scholar</label>
+                            <input type="text" id="scholar" name="scholar" placeholder="ID">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="orcid">ORCID</label>
+                            <input type="text" id="orcid" name="orcid" placeholder="0000-0000-0000-0000">
+                        </div>
+                    </section>
+
+                    <!-- Selección de secciones -->
+                    <section class="form-section" id="section-sections">
+                        <h2>Secciones a Incluir</h2>
+                        <div class="form-group">
+                            <div class="section-toggle">
+                                <label for="toggle-about">Sobre mí</label>
+                                <input type="checkbox" id="toggle-about" name="sections" value="about" checked>
+                            </div>
+                            <div class="section-toggle">
+                                <label for="toggle-experience">Experiencia</label>
+                                <input type="checkbox" id="toggle-experience" name="sections" value="experience">
+                            </div>
+                            <div class="section-toggle">
+                                <label for="toggle-publications">Publicaciones</label>
+                                <input type="checkbox" id="toggle-publications" name="sections" value="publications">
+                            </div>
+                            <div class="section-toggle">
+                                <label for="toggle-projects">Portfolio/Proyectos</label>
+                                <input type="checkbox" id="toggle-projects" name="sections" value="projects">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Experiencia -->
+                    <section class="form-section" id="section-experience">
+                        <h2>Experiencia</h2>
+                        <div id="experience-container"></div>
+                        <button type="button" class="btn-add" onclick="addExperience()">+ Añadir Experiencia</button>
+                    </section>
+
+                    <!-- Publicaciones -->
+                    <section class="form-section" id="section-publications">
+                        <h2>Publicaciones</h2>
+                        <div id="publications-container"></div>
+                        <button type="button" class="btn-add" onclick="addPublication()">+ Añadir Publicación</button>
+                    </section>
+
+                    <!-- Proyectos -->
+                    <section class="form-section" id="section-projects">
+                        <h2>Proyectos</h2>
+                        <div id="projects-container"></div>
+                        <button type="button" class="btn-add" onclick="addProject()">+ Añadir Proyecto</button>
+                    </section>
+
+                    <!-- Habilidades técnicas -->
+                    <section class="form-section" id="section-skills">
+                        <h2>Habilidades Técnicas</h2>
+                        <div class="form-group">
+                            <label for="skills">Habilidades (separadas por comas)</label>
+                            <input type="text" id="skills" name="skills" placeholder="C++, Python, JavaScript, Git, Docker...">
+                        </div>
+                    </section>
+
+                    <!-- Botones de acción -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-preview" onclick="previewPortfolio()">Vista Previa</button>
+                        <button type="button" class="btn-download" onclick="downloadPortfolio()">Descargar</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/generator.js') }}"></script>
+</body>
+</html>
