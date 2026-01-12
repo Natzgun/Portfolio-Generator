@@ -1,56 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Portafolio</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/generator.css') }}">
 </head>
+
 <body>
     <div class="generator-container">
         <div class="generator-header">
             <h1>Generador de Portafolio</h1>
-            <a href="/" class="btn-secondary">Volver</a>
+            <div class="header-actions">
+                <span class="header-tip">💡 Edita <code>data.json</code> para actualizar tu portfolio</span>
+                <label class="btn-json btn-import">
+                    <input type="file" id="json-file-input" accept=".json" style="display: none;"
+                        onchange="importJSON(this)">
+                    📂 Cargar JSON
+                </label>
+                <button type="button" class="btn-preview" onclick="previewPortfolio()">👁️ Vista Previa</button>
+                <button type="button" class="btn-download" onclick="downloadPortfolio()">📦 Descargar</button>
+                <a href="/" class="btn-secondary">Volver</a>
+            </div>
         </div>
 
         <div class="generator-layout">
             <!-- Sidebar de navegación -->
             <aside class="sidebar-nav">
+                <!-- Progreso general -->
+                <div class="progress-overall">
+                    <div class="progress-label">
+                        <span>Progreso total</span>
+                        <span id="overall-percent">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="overall-progress-bar"></div>
+                    </div>
+                </div>
+
                 <nav class="nav-menu">
                     <a href="#basic" class="nav-item active" data-section="basic">
                         <span class="nav-icon">👤</span>
                         <span class="nav-label">Información Básica</span>
-                        <span class="nav-status" id="status-basic">○</span>
+                        <span class="nav-status" id="status-basic">0%</span>
                     </a>
                     <a href="#contact" class="nav-item" data-section="contact">
                         <span class="nav-icon">📧</span>
                         <span class="nav-label">Contacto</span>
-                        <span class="nav-status" id="status-contact">○</span>
+                        <span class="nav-status" id="status-contact">0%</span>
                     </a>
                     <a href="#sections" class="nav-item" data-section="sections">
                         <span class="nav-icon">📋</span>
                         <span class="nav-label">Secciones</span>
-                        <span class="nav-status" id="status-sections">○</span>
+                        <span class="nav-status" id="status-sections">0%</span>
                     </a>
-                    <a href="#experience" class="nav-item" data-section="experience">
+                    <a href="#experience" class="nav-item hidden" data-section="experience">
                         <span class="nav-icon">💼</span>
                         <span class="nav-label">Experiencia</span>
-                        <span class="nav-status" id="status-experience">○</span>
+                        <span class="nav-status" id="status-experience">0%</span>
                     </a>
-                    <a href="#publications" class="nav-item" data-section="publications">
+                    <a href="#publications" class="nav-item hidden" data-section="publications">
                         <span class="nav-icon">📚</span>
                         <span class="nav-label">Publicaciones</span>
-                        <span class="nav-status" id="status-publications">○</span>
+                        <span class="nav-status" id="status-publications">0%</span>
                     </a>
-                    <a href="#projects" class="nav-item" data-section="projects">
+                    <a href="#projects" class="nav-item hidden" data-section="projects">
                         <span class="nav-icon">🚀</span>
                         <span class="nav-label">Proyectos</span>
-                        <span class="nav-status" id="status-projects">○</span>
+                        <span class="nav-status" id="status-projects">0%</span>
                     </a>
                     <a href="#skills" class="nav-item" data-section="skills">
                         <span class="nav-icon">⚡</span>
                         <span class="nav-label">Habilidades</span>
-                        <span class="nav-status" id="status-skills">○</span>
+                        <span class="nav-status" id="status-skills">0%</span>
                     </a>
                 </nav>
             </aside>
@@ -61,7 +84,7 @@
                     <!-- Información básica -->
                     <section class="form-section active" id="section-basic">
                         <h2>Información Básica</h2>
-                        
+
                         <div class="form-group">
                             <label for="name">Nombre completo *</label>
                             <input type="text" id="name" name="name" required>
@@ -69,25 +92,38 @@
 
                         <div class="form-group">
                             <label for="title">Título profesional *</label>
-                            <input type="text" id="title" name="title" placeholder="Ej: Computer Scientist, Software Engineer" required>
+                            <input type="text" id="title" name="title"
+                                placeholder="Ej: Computer Scientist, Software Engineer" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="profile-image">Foto de perfil (URL o base64)</label>
-                            <input type="text" id="profile-image" name="profileImage" placeholder="URL de imagen o base64">
-                            <small>Puedes usar una URL o codificar tu imagen en base64</small>
+                            <label>Foto de perfil</label>
+                            <div class="image-input-group">
+                                <div class="image-upload-option">
+                                    <label class="btn-upload">
+                                        <input type="file" id="profile-image-file" accept="image/*"
+                                            onchange="handleImageUpload(this, 'profile-image', 'profile-image-preview')">
+                                        📁 Subir imagen
+                                    </label>
+                                    <span class="upload-or">o</span>
+                                    <input type="text" id="profile-image" name="profileImage"
+                                        placeholder="URL de imagen">
+                                </div>
+                                <div class="image-preview" id="profile-image-preview"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="about">Sobre mí</label>
-                            <textarea id="about" name="about" rows="6" placeholder="Escribe una breve descripción sobre ti..."></textarea>
+                            <textarea id="about" name="about" rows="6"
+                                placeholder="Escribe una breve descripción sobre ti..."></textarea>
                         </div>
                     </section>
 
                     <!-- Contacto -->
                     <section class="form-section" id="section-contact">
                         <h2>Información de Contacto</h2>
-                        
+
                         <div class="form-group">
                             <label for="location">Ubicación</label>
                             <input type="text" id="location" name="location" placeholder="Ej: Arequipa, Perú">
@@ -148,21 +184,21 @@
                     </section>
 
                     <!-- Experiencia -->
-                    <section class="form-section" id="section-experience">
+                    <section class="form-section hidden" id="section-experience">
                         <h2>Experiencia</h2>
                         <div id="experience-container"></div>
                         <button type="button" class="btn-add" onclick="addExperience()">+ Añadir Experiencia</button>
                     </section>
 
                     <!-- Publicaciones -->
-                    <section class="form-section" id="section-publications">
+                    <section class="form-section hidden" id="section-publications">
                         <h2>Publicaciones</h2>
                         <div id="publications-container"></div>
                         <button type="button" class="btn-add" onclick="addPublication()">+ Añadir Publicación</button>
                     </section>
 
                     <!-- Proyectos -->
-                    <section class="form-section" id="section-projects">
+                    <section class="form-section hidden" id="section-projects">
                         <h2>Proyectos</h2>
                         <div id="projects-container"></div>
                         <button type="button" class="btn-add" onclick="addProject()">+ Añadir Proyecto</button>
@@ -173,15 +209,10 @@
                         <h2>Habilidades Técnicas</h2>
                         <div class="form-group">
                             <label for="skills">Habilidades (separadas por comas)</label>
-                            <input type="text" id="skills" name="skills" placeholder="C++, Python, JavaScript, Git, Docker...">
+                            <input type="text" id="skills" name="skills"
+                                placeholder="C++, Python, JavaScript, Git, Docker...">
                         </div>
                     </section>
-
-                    <!-- Botones de acción -->
-                    <div class="form-actions">
-                        <button type="button" class="btn-preview" onclick="previewPortfolio()">Vista Previa</button>
-                        <button type="button" class="btn-download" onclick="downloadPortfolio()">Descargar</button>
-                    </div>
                 </form>
             </main>
         </div>
@@ -189,4 +220,5 @@
 
     <script src="{{ url_for('static', filename='js/generator.js') }}"></script>
 </body>
+
 </html>

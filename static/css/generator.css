@@ -16,23 +16,134 @@
     --success-hover: #059669;
     --danger-color: #ef4444;
     --danger-hover: #dc2626;
+    --layout-max-width: 1200px;
+    --header-height: 72px;
     --sidebar-width: 250px;
 }
+
+.hidden {
+    display: none !important;
+}
+
+/* ==================== Toast Notifications ==================== */
+
+#toast-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid var(--primary-color);
+    min-width: 300px;
+    max-width: 400px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-success {
+    border-left-color: var(--success-color);
+}
+
+.toast-error {
+    border-left-color: var(--danger-color);
+}
+
+.toast-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.toast-success .toast-icon {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.toast-error .toast-icon {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+}
+
+.toast-message {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    margin-top: 0.125rem;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.toast-close:hover {
+    color: var(--text-primary);
+}
+
+/* ==================== End Toast ==================== */
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-primary);
-    background: var(--bg-secondary);
+    background: radial-gradient(circle at 20% 20%, #f3f4f6 0, #ffffff 35%, #eef2ff 100%);
     line-height: 1.6;
-    overflow: hidden;
-    height: 100vh;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.5rem;
 }
 
 .generator-container {
-    height: 100vh;
+    max-width: var(--layout-max-width);
+    margin: 0 auto;
+    height: calc(100vh - 3rem);
+    min-height: calc(100vh - 3rem);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    box-shadow: 0 20px 60px -24px rgba(0, 0, 0, 0.35);
 }
 
 .generator-header {
@@ -45,12 +156,67 @@ body {
     flex-shrink: 0;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     z-index: 100;
+    min-height: var(--header-height);
+    border-radius: 1rem 1rem 0 0;
 }
 
 .generator-header h1 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header-tip {
+    font-size: 0.8rem;
+    color: #92400e;
+    background: #fef3c7;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #fcd34d;
+}
+
+.header-tip code {
+    background: #fde68a;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.btn-json {
+    padding: 0.5rem 1rem;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.btn-json:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+}
+
+.btn-json.btn-import {
+    background: #d1fae5;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.btn-json.btn-import:hover {
+    background: #a7f3d0;
 }
 
 .btn-secondary {
@@ -75,7 +241,11 @@ body {
     flex: 1;
     display: flex;
     overflow: hidden;
-    height: calc(100vh - 65px);
+    min-height: 0;
+    height: calc(100% - var(--header-height));
+    background: var(--bg-secondary);
+    padding: 1.25rem;
+    gap: 1.25rem;
 }
 
 /* Sidebar de navegación */
@@ -86,6 +256,8 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     flex-shrink: 0;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.35);
 }
 
 .nav-menu {
@@ -129,35 +301,69 @@ body {
     font-size: 0.9375rem;
 }
 
+/* ==================== Progress Indicators ==================== */
+
+.progress-overall {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.progress-label span:last-child {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
 .nav-status {
     font-size: 0.75rem;
-    width: 16px;
-    height: 16px;
+    min-width: 36px;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    font-weight: 600;
+    transition: all 0.2s;
 }
 
 .nav-status.complete {
-    color: var(--success-color);
-}
-
-.nav-status.complete::before {
-    content: "✓";
-    font-weight: bold;
+    background: #d1fae5;
+    color: #065f46;
 }
 
 .nav-status.partial {
-    color: #f59e0b;
+    background: #fef3c7;
+    color: #92400e;
 }
 
-.nav-status.partial::before {
-    content: "◐";
-}
-
-.nav-status.empty::before {
-    content: "○";
+.nav-status.empty {
+    background: var(--bg-secondary);
     color: var(--text-secondary);
 }
 
@@ -169,6 +375,10 @@ body {
     background: var(--bg-primary);
     padding: 2rem;
     position: relative;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 18px 50px -28px rgba(0, 0, 0, 0.35);
+    max-width: calc(100% - 0.5rem);
 }
 
 .form-section {
@@ -187,6 +397,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -245,6 +456,104 @@ body {
     color: var(--text-secondary);
 }
 
+/* ==================== Image Upload Styles ==================== */
+
+.image-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.image-upload-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.image-upload-option input[type="text"] {
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #e0e7ff;
+    border: 1px solid #818cf8;
+    color: #3730a3;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-upload:hover {
+    background: #c7d2fe;
+}
+
+.btn-upload input[type="file"] {
+    display: none;
+}
+
+.btn-upload-small {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
+.upload-or {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+.image-preview {
+    position: relative;
+    display: inline-block;
+}
+
+.image-preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 0.5rem;
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+}
+
+.image-preview-small img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.btn-remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--danger-color);
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-remove-image:hover {
+    background: var(--danger-hover);
+    transform: scale(1.1);
+}
+
+/* ==================== End Image Upload Styles ==================== */
+
 .section-toggle {
     display: flex;
     align-items: center;
@@ -280,13 +589,13 @@ body {
 .btn-add,
 .btn-preview,
 .btn-download {
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.5rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
 }
 
 .btn-add {
@@ -294,29 +603,16 @@ body {
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     width: 100%;
+    padding: 0.75rem 1.5rem;
 }
 
 .btn-add:hover {
     background: var(--border-color);
 }
 
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid var(--border-color);
-    position: sticky;
-    bottom: 0;
-    background: var(--bg-primary);
-    z-index: 10;
-    padding-bottom: 1rem;
-}
-
 .btn-preview {
     background: var(--primary-color);
     color: white;
-    flex: 1;
 }
 
 .btn-preview:hover {
@@ -328,13 +624,57 @@ body {
 .btn-download {
     background: var(--success-color);
     color: white;
-    flex: 1;
 }
 
 .btn-download:hover {
     background: var(--success-hover);
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-download-json {
+    background: #8b5cf6;
+}
+
+.btn-download-json:hover {
+    background: #7c3aed;
+}
+
+.form-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.form-actions-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.form-actions-buttons .btn-preview,
+.form-actions-buttons .btn-download {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+}
+
+.download-hint {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.download-hint code {
+    background: #f3f4f6;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-weight: 500;
+    color: var(--text-primary);
 }
 
 .dynamic-item {
@@ -402,23 +742,38 @@ body {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 0.75rem;
+    }
+
+    .generator-container {
+        height: auto;
+        min-height: calc(100vh - 1.5rem);
+    }
+
+    .generator-layout {
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
     .generator-layout {
         flex-direction: column;
     }
-    
+
     .sidebar-nav {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
         max-height: 200px;
     }
-    
+
     .nav-menu {
         flex-direction: row;
         overflow-x: auto;
         padding: 0.5rem;
     }
-    
+
     .nav-item {
         padding: 0.5rem 1rem;
         white-space: nowrap;
@@ -426,37 +781,47 @@ body {
         border-bottom: 3px solid transparent;
         min-width: fit-content;
     }
-    
+
     .nav-item.active {
         border-left: none;
         border-bottom-color: var(--primary-color);
     }
-    
+
     .nav-icon {
         font-size: 1rem;
     }
-    
+
     .nav-label {
         font-size: 0.875rem;
     }
-    
+
     .generator-header {
         padding: 0.875rem 1.25rem;
     }
-    
+
     .generator-header h1 {
         font-size: 1.25rem;
     }
-    
+
     .form-container {
         padding: 1.5rem;
     }
-    
-    .form-actions {
+
+    .form-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .form-actions-buttons {
         flex-direction: column;
     }
-    
-    .form-actions button {
+
+    .form-actions-buttons button {
         width: 100%;
+    }
+
+    .download-hint {
+        text-align: center;
     }
 }

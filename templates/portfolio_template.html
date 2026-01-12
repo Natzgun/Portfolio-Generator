@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,7 +61,7 @@
             font-size: 1.1rem;
             transition: color 0.2s;
         }
-        
+
         .nav-name:hover {
             color: var(--link-color);
         }
@@ -100,12 +101,30 @@
             text-align: center;
         }
 
+        .profile-home-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .profile-home-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.35);
+            background: #f8fafc;
+        }
+
         .profile-image {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0;
             border: 3px solid var(--border-color);
         }
 
@@ -120,7 +139,7 @@
             justify-content: center;
             font-size: 3rem;
             font-weight: 600;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto;
         }
 
         .profile-name {
@@ -170,7 +189,13 @@
 
         .content-section {
             margin-bottom: 4rem;
-            scroll-margin-top: 100px;
+            scroll-margin-top: 80px;
+        }
+
+        /* Ancla invisible al top */
+        #top {
+            position: absolute;
+            top: 0;
         }
 
         .section-title {
@@ -275,6 +300,8 @@
         }
 
         .publication-item {
+            display: flex;
+            gap: 1.5rem;
             margin-bottom: 2.5rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--border-color);
@@ -282,6 +309,22 @@
 
         .publication-item:last-child {
             border-bottom: none;
+        }
+
+        .publication-images {
+            flex-shrink: 0;
+            width: 200px;
+        }
+
+        .publication-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .publication-content {
+            flex: 1;
         }
 
         .publication-title {
@@ -307,26 +350,17 @@
         .publication-venue {
             color: var(--text-secondary);
             font-style: italic;
-            margin-bottom: 1rem;
         }
 
-        .publication-images {
-            margin-top: 1rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        @media (max-width: 600px) {
+            .publication-item {
+                flex-direction: column;
+            }
 
-        .publication-image {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .publication-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border-color);
+            .publication-images {
+                width: 100%;
+                max-width: 300px;
+            }
         }
 
         .projects-grid {
@@ -428,23 +462,28 @@
         }
     </style>
 </head>
+
 <body>
+    <div id="top"></div>
     <nav class="navbar">
         <div class="nav-container">
             <a href="#about" class="nav-name" style="text-decoration: none; color: inherit; cursor: pointer;">
                 {% set name_parts = portfolio.name.split() %}
                 {% if name_parts|length > 2 %}
-                    {{ name_parts[0] }} {{ name_parts[1][0] + '.' }} {{ name_parts[2:]|join(' ') }}
+                {{ name_parts[0] }} {{ name_parts[1][0] + '.' }} {{ name_parts[2:]|join(' ') }}
                 {% elif name_parts|length > 1 %}
-                    {{ name_parts[0] }} {{ name_parts[1] }}
+                {{ name_parts[0] }} {{ name_parts[1] }}
                 {% else %}
-                    {{ name_parts[0] }}
+                {{ name_parts[0] }}
                 {% endif %}
             </a>
             <div class="nav-links">
-                {% if 'publications' in portfolio.sections and portfolio.publications %}<a href="#publications">Publications</a>{% endif %}
-                {% if 'projects' in portfolio.sections and portfolio.projects %}<a href="#portfolio">Portfolio</a>{% endif %}
-                {% if 'experience' in portfolio.sections and portfolio.experience %}<a href="#experience">Experiencia</a>{% endif %}
+                {% if 'publications' in portfolio.sections and portfolio.publications %}<a
+                    href="#publications">Publications</a>{% endif %}
+                {% if 'projects' in portfolio.sections and portfolio.projects %}<a href="#portfolio">Portfolio</a>{%
+                endif %}
+                {% if 'experience' in portfolio.sections and portfolio.experience %}<a
+                    href="#experience">Experiencia</a>{% endif %}
                 {% if 'about' in portfolio.sections %}<a href="#about">About</a>{% endif %}
             </div>
         </div>
@@ -453,13 +492,14 @@
     <div class="container">
         <aside class="sidebar">
             <div class="profile-section">
-                {% if portfolio.profileImage %}
-                <img src="{{ portfolio.profileImage }}" alt="{{ portfolio.name }}" class="profile-image">
-                {% else %}
-                <div class="profile-image-placeholder">{{ portfolio.name[0]|upper }}</div>
-                {% endif %}
-                
-                <h1 class="profile-name">{{ portfolio.name }}</h1>
+                <a href="#top" class="profile-home-link" aria-label="Volver al inicio">
+                    {% if portfolio.profileImage %}
+                    <img src="{{ portfolio.profileImage }}" alt="{{ portfolio.name }}" class="profile-image">
+                    {% else %}
+                    <div class="profile-image-placeholder">{{ portfolio.name[0]|upper }}</div>
+                    {% endif %}
+                    <h1 class="profile-name">{{ portfolio.name }}</h1>
+                </a>
                 <p class="profile-title">{{ portfolio.title }}</p>
 
                 <div class="contact-info">
@@ -473,21 +513,23 @@
                     {% if portfolio.contact.email %}
                     <div class="contact-item">
                         <span class="contact-icon">✉️</span>
-                        <a href="mailto:{{ portfolio.contact.email }}">Email</a>
+                        <a href="mailto:{{ portfolio.contact.email }}">{{ portfolio.contact.email }}</a>
                     </div>
                     {% endif %}
 
                     {% if portfolio.contact.researchgate %}
                     <div class="contact-item">
                         <span class="contact-icon">R</span>
-                        <a href="https://www.researchgate.net/profile/{{ portfolio.contact.researchgate }}" target="_blank">ResearchGate</a>
+                        <a href="https://www.researchgate.net/profile/{{ portfolio.contact.researchgate }}"
+                            target="_blank">ResearchGate</a>
                     </div>
                     {% endif %}
 
                     {% if portfolio.contact.linkedin %}
                     <div class="contact-item">
                         <span class="contact-icon">in</span>
-                        <a href="https://www.linkedin.com/in/{{ portfolio.contact.linkedin }}" target="_blank">LinkedIn</a>
+                        <a href="https://www.linkedin.com/in/{{ portfolio.contact.linkedin }}"
+                            target="_blank">LinkedIn</a>
                     </div>
                     {% endif %}
 
@@ -501,7 +543,8 @@
                     {% if portfolio.contact.scholar %}
                     <div class="contact-item">
                         <span class="contact-icon">🎓</span>
-                        <a href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}" target="_blank">Google Scholar</a>
+                        <a href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}"
+                            target="_blank">Google Scholar</a>
                     </div>
                     {% endif %}
 
@@ -569,30 +612,32 @@
             <section id="publications" class="content-section">
                 <h2 class="section-title">Publications</h2>
                 {% if portfolio.contact.scholar %}
-                <p class="section-intro">You can also find my articles on <a href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}" target="_blank">my Google Scholar profile</a>.</p>
+                <p class="section-intro">You can also find my articles on <a
+                        href="https://scholar.google.com/citations?user={{ portfolio.contact.scholar }}"
+                        target="_blank">my Google Scholar profile</a>.</p>
                 {% endif %}
-                
+
                 {% for year, pubs in portfolio.publications_by_year.items() %}
                 <div class="publications-year">
                     <h3 class="year-title">{{ year }}</h3>
                     {% for pub in pubs %}
                     <div class="publication-item">
-                        <h4 class="publication-title">
-                            {% if pub.url %}<a href="{{ pub.url }}" target="_blank">{{ pub.title }}</a>
-                            {% else %}{{ pub.title }}{% endif %}
-                        </h4>
-                        {% if pub.authors %}<p class="publication-authors">{{ pub.authors }}</p>{% endif %}
-                        {% if pub.venue %}<p class="publication-venue">{{ pub.venue }}</p>{% endif %}
                         {% if pub.image %}
                         <div class="publication-images">
-                            {% set images = pub.image.split(',') if ',' in pub.image else [pub.image] %}
-                            {% for img in images %}
                             <div class="publication-image">
-                                <img src="{{ img.strip() }}" alt="{{ pub.title }}">
+                                <img src="{{ pub.image }}" alt="{{ pub.title }}">
                             </div>
-                            {% endfor %}
                         </div>
                         {% endif %}
+                        <div class="publication-content">
+                            <h4 class="publication-title">
+                                {% if pub.url %}<a href="{{ pub.url }}" target="_blank">{{ pub.title }}</a>
+                                {% else %}{{ pub.title }}{% endif %}
+                            </h4>
+                            {% if pub.authors %}<p class="publication-authors">{{ pub.authors }}</p>{% endif %}
+                            {% if pub.venue %}<p class="publication-venue">Published in <em>{{ pub.venue }}</em>{% if
+                                pub.year %}, {{ pub.year }}{% endif %}</p>{% endif %}
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -625,5 +670,34 @@
             {% endif %}
         </main>
     </div>
+
+    <script>
+        // Navegación suave con JavaScript para mayor compatibilidad
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Actualizar la URL sin recargar
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+
 </html>

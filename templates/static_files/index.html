@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="top"></div>
+
+  <!-- Loading state -->
+  <div id="loading" class="loading">
+    <p>Cargando portfolio...</p>
+  </div>
+
+  <!-- Error state -->
+  <div id="error" class="error hidden">
+    <p>Error al cargar los datos del portfolio.</p>
+    <p>Asegúrate de que el archivo <code>data.json</code> existe y tiene el formato correcto.</p>
+  </div>
+
+  <!-- Main content (hidden until loaded) -->
+  <div id="app" class="hidden">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#about" class="nav-name" id="nav-name"></a>
+        <div class="nav-links" id="nav-links"></div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="profile-section">
+          <a href="#top" class="profile-home-link" aria-label="Volver al inicio">
+            <div id="profile-image-container"></div>
+            <h1 class="profile-name" id="profile-name"></h1>
+          </a>
+          <p class="profile-title" id="profile-title"></p>
+          <div class="contact-info" id="contact-info"></div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="main-content"></main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
